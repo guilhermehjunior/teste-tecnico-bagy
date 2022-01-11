@@ -1,0 +1,26 @@
+{
+  "name": "teste-tecnico-bagy",
+  "version": "1.0.0",
+  "description": "Teste técnico realizado no processo seletivo da bagy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guilhermehjunior/teste-tecnico-bagy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guilhermehjunior/teste-tecnico-bagy/issues"
+  },
+  "homepage": "https://github.com/guilhermehjunior/teste-tecnico-bagy#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "sqlite3": "^5.0.2"
+  }
+}
