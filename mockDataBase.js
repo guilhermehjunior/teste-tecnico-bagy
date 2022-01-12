@@ -6,15 +6,7 @@ module.exports = {
       email: 'teste@teste.coom',
       CPF: '09398710654',
       dataNascimento: '12/07/1002',
-      endereço: {
-        rua: 'santo garbuio',
-        bairro: 'xaxim',
-        cidade: 'curitiba',
-        estado: 'PR',
-        país: 'BR',
-        CEP: '85884-000',
-        número: 12,
-      }
+      enderecoId: 1,
     },
     {
       id: 2,
@@ -22,15 +14,7 @@ module.exports = {
       email: 'teste@teste.coom',
       CPF: '09398710654',
       dataNascimento: '12/07/1002',
-      endereço: {
-        rua: 'santo garbuio',
-        bairro: 'xaxim',
-        cidade: 'curitiba',
-        estado: 'PR',
-        país: 'BR',
-        CEP: '85884-000',
-        número: 12,
-      }
+      enderecoId: 2,
     },
   ],
   produtos: [
@@ -51,6 +35,28 @@ module.exports = {
       peso: 12.8,
       preco: 10.99,
       quantidadeEmEstoque: 200,
+    }
+  ],
+  enderecos: [
+    {
+      id: 1,
+      rua: 'santo garbuio',
+      bairro: 'xaxim',
+      cidade: 'Curitiba',
+      estado: 'PR',
+      pais: 'Brasil',
+      cep: '81710-320',
+      numero: 127,
+    },
+    {
+      id: 2,
+      rua: 'herminia zaneti',
+      bairro: 'xaxim',
+      cidade: 'Curitiba',
+      estado: 'PR',
+      pais: 'Brasil',
+      cep: '81710-320',
+      numero: 127,
     }
   ],
 } 

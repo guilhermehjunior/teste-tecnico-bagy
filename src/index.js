@@ -10,8 +10,40 @@ const {
   GraphQLFloat,
 } = require('graphql');
 
-const { produtos, clientes } = require('../mockDataBase');
+const { produtos, clientes, enderecos } = require('../mockDataBase');
 const app = express();
+
+const AdressType = new GraphQLObjectType({
+  name: 'Address',
+  description: 'this represents an address',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLInt) },
+    rua: { type: GraphQLNonNull(GraphQLString) },
+    bairro: { type: GraphQLNonNull(GraphQLString) },
+    cidade: { type: GraphQLNonNull(GraphQLString) },
+    estado: { type: GraphQLNonNull(GraphQLString) },
+    pais: { type: GraphQLNonNull(GraphQLString) },
+    cep: { type: GraphQLNonNull(GraphQLString) },
+    numero: { type: GraphQLNonNull(GraphQLInt) },
+  }),
+});
+
+const ClientType = new GraphQLObjectType({
+  name: 'Client',
+  description: 'this represents a client',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLInt) },
+    nomeCompleto: { type: GraphQLNonNull(GraphQLString) },
+    email: { type: GraphQLNonNull(GraphQLString) },
+    cpf: { type: GraphQLNonNull(GraphQLString) },
+    dataDeNascimento: { type: GraphQLNonNull(GraphQLString) },
+    enderecoId: { type: GraphQLNonNull(GraphQLInt) },
+    endereco: {
+      type: AdressType,
+      resolve: (client) => enderecos.find((endereco) => endereco.id === client.enderecoId),
+    }
+  }),
+});
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -35,7 +67,12 @@ const RootQueryType = new GraphQLObjectType({
       type: GraphQLList(ProductType),
       description: 'products list',
       resolve: () => produtos,
-    }
+    },
+    clients: {
+      type: GraphQLList(ClientType),
+      description: 'clients list',
+      resolve: () => clientes,
+    },
   }),
 });
 
