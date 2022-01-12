@@ -11,9 +11,13 @@ const {
 } = require('graphql');
 
 const {
-  products,
-  product,
-} = require('./resolvers');
+  productsQueryResolver,
+  productQueryResolver,
+  clientsQueryResolver,
+  clientQueryResolver,
+  ordersQueryResolver,
+  orderQueryResolver,
+} = require('./resolvers/query');
 
 
 const { produtos, clientes, enderecos, pedidos, produtosPorPedido } = require('../mockDataBase');
@@ -106,20 +110,20 @@ const RootQueryType = new GraphQLObjectType({
     products: {
       type: GraphQLList(ProductType),
       description: 'products list',
-      resolve: products,
+      resolve: productsQueryResolver,
     },
     product: {
       type: ProductType,
       description: 'one product by Id',
       args: {
-        id: { type: GraphQLInt },
+        id: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: product ,
+      resolve: productQueryResolver,
     },
     clients: {
       type: GraphQLList(ClientType),
       description: 'clients list',
-      resolve: () => clientes,
+      resolve: clientsQueryResolver,
     },
     client: {
       type: ClientType,
@@ -127,12 +131,12 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_parent, args) => clientes.find((cliente) => cliente.id === args.id),
+      resolve: clientQueryResolver,
     },
     orders: {
       type: GraphQLList(OrderType),
       description: 'orders list',
-      resolve: () => pedidos,
+      resolve: ordersQueryResolver,
     },
     order: {
       type: OrderType,
@@ -140,7 +144,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_parent, args) => pedidos.find((pedido) => pedido.id === args.id),
+      resolve: orderQueryResolver,
     },
   }),
 });
