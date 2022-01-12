@@ -7,8 +7,6 @@ let db = new sqlite3.Database('./teste3.db', (err) => {
   }
 });
 
-const imageAddress = 'https://a-static.mlcdn.com.br/618x463/caneta-azul-0-7-pilot-bps/pedagogica/o1129942/ec26bc3662b688e9d07d465161c2180f.jpg';
-
 const queryCreateTableClients =`
   CREATE TABLE IF NOT EXISTS clientes(
   id INTEGER,
@@ -60,7 +58,7 @@ const queryCreateTableOrders = `
     ON UPDATE CASCADE);`;
 
 const queryCreateTableOrdersProducts = `
-  CREATE TABLE pedidos_produtos(
+  CREATE TABLE IF NOT EXISTS pedidos_produtos(
   idProduto INTEGER,
   quantidade INTEGER NOT NULL,
   idVenda INTEGER,
@@ -79,15 +77,15 @@ const queryInsertAddress = `INSERT INTO enderecos(rua, bairro, cidade, estado, p
   ('Francisco Derosso', 'Xaxim', 'Curitiba', 'PR', 'BR', '82710-320', 3000),
   ('Gabriel Freceiro', 'Cidade Alta', 'Medianeira', 'PR', 'BR', '85884000', 127)`;
 
-const queryInsertClients = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, addressId) VALUES
+const queryInsertClients = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, idEndereco) VALUES
   ('Guilherme H Jr', 'guilherme@email.com', '99999999999', '12/07/1992', 1),
   ('Alceu Fonseca', 'fonseca@email.com', '88888888888', '20/09/1990', 2),
   ('Rogerio Andrade', 'rogerio@email.com', '77777777777', '12/02/1980', 3)`;
 
 const queryInsertProducts = `INSERT INTO produtos(nome, imagem, descricao, peso, preco, estoque) VALUES
-('caneta azul', ${imageAddress}, 'caneta de cor azul', 0.1, 1.99, 100),
-('caneta vermelha', ${imageAddress}, 'caneta de cor vermelha', 0.1, 1.59, 200),
-('caneta verde', ${imageAddress}, 'caneta de cor vermelha', 0.2, 2.59, 500)`;
+('caneta azul', 'canetaazul.jpg', 'caneta de cor azul', 0.1, 1.99, 100),
+('caneta vermelha', 'canetavermelha.png', 'caneta de cor vermelha', 0.1, 1.59, 200),
+('caneta verde', 'canetaverde.png', 'caneta de cor verde', 0.2, 2.59, 500)`;
 
 const queryInsertOrders= `INSERT INTO pedidos(dataPedido, parcelas, idComprador, status) VALUES
 ('31/12/2021', 12, 1, 'ENVIADO'),
@@ -112,16 +110,17 @@ db.serialize(() => {
     .run(queryCreateTableProducts)
     .run(queryCreateTableOrders)
     .run(queryCreateTableOrdersProducts)
-    .run(`INSERT INTO clients(nomeCompleto, email, cpf, dataNascimento, addressId)
-          VALUES('Guilherme', 'guihjr', '098765132', '12/07/1992', 1),
-                ('Alceu', 'guihjr', '098765132', '12/07/1992', 2),
-                ('Rogerio', 'guihjr', '098765132', '12/07/1992', 3)`)
-    .each(`SELECT * FROM clients`, (err, row) => {
-      if (err){
-        throw err;
-      }
-      console.log(row);
-    });
+    .run(queryInsertAddress)
+    .run(queryInsertClients)
+    .run(queryInsertProducts)
+    .run(queryInsertOrders)
+    .run(queryInsertOrdersProducts)
+    // .each(`SELECT * FROM produtos`, (err, row) => {
+    //   if (err){
+    //     throw err;
+    //   }
+    //   console.log(row);
+    // });
 });
 
 // close the database connection
