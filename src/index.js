@@ -10,7 +10,7 @@ const {
   GraphQLFloat,
 } = require('graphql');
 
-const { produtos, clientes, enderecos } = require('../mockDataBase');
+const { produtos, clientes, enderecos, pedidos, produtosPorPedido } = require('../mockDataBase');
 const app = express();
 
 const AdressType = new GraphQLObjectType({
@@ -59,6 +59,39 @@ const ProductType = new GraphQLObjectType({
   }),
 });
 
+const ProductByOrderType = new GraphQLObjectType({
+  name: 'ProductByOrder',
+  description: 'products and quantitys in each order',
+  fields: () => ({
+    productId: { type: (GraphQLInt) },
+    product: {
+      type: ProductType,
+      resolve: (order) => produtos.find((produto) => produto.id === order.productId),
+    },
+    quantity: { type: (GraphQLInt) },
+    orderId: { type: (GraphQLInt) },
+  }),
+});
+
+const OrderType = new GraphQLObjectType({
+  name: 'Order',
+  description: 'this represents a client order',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLInt) },
+    products: {
+      type: GraphQLList(ProductByOrderType),
+      resolve: (order) => produtosPorPedido.filter((pedido) => pedido.orderId === order.id),
+    },
+    dataCriacao: { type: GraphQLNonNull(GraphQLString) },
+    parcelas: { type: GraphQLNonNull(GraphQLInt) },
+    buyerId: { type: GraphQLNonNull(GraphQLInt) },
+    buyer: {
+      type: ClientType,
+      resolve: (order) => clientes.find((cliente) => order.buyerId === cliente.id),
+    },
+  }),
+});
+
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
@@ -73,6 +106,11 @@ const RootQueryType = new GraphQLObjectType({
       description: 'clients list',
       resolve: () => clientes,
     },
+    orders: {
+      type: GraphQLList(OrderType),
+      description: 'orders list',
+      resolve: () => pedidos,
+    }
   }),
 });
 

@@ -59,4 +59,19 @@ module.exports = {
       numero: 127,
     }
   ],
+  pedidos: [
+    {
+      id: 1,
+      dataCriacao: '21/10/2018',
+      parcelas: 12,
+      buyerId: 1,
+    }
+  ],
+  produtosPorPedido: [
+    {
+      productId: 1,
+      quantity: 2,
+      orderId: 1,
+    }
+  ],
 } 
