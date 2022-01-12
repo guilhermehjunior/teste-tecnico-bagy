@@ -138,8 +138,147 @@ const RootQueryType = new GraphQLObjectType({
   }),
 });
 
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    createClient: {
+      type: ClientType,
+      description: 'add a client',
+      args: {
+        nomeCompleto: { type: GraphQLNonNull(GraphQLString) } ,
+        email: { type: GraphQLNonNull(GraphQLString) },
+        CPF: { type: GraphQLNonNull(GraphQLString) } ,
+        dataNascimento: { type: GraphQLNonNull(GraphQLString) },
+        rua: { type: GraphQLNonNull(GraphQLString) },
+        bairro: { type: GraphQLNonNull(GraphQLString) },
+        cidade: { type: GraphQLNonNull(GraphQLString) },
+        estado: { type: GraphQLNonNull(GraphQLString) },
+        pais: { type: GraphQLNonNull(GraphQLString) },
+        cep: { type: GraphQLNonNull(GraphQLString) },
+        numero: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    updateClient: {
+      type: ClientType,
+      description: 'update a client',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+        nomeCompleto: { type: GraphQLString } ,
+        email: { type: GraphQLString },
+        CPF: { type: GraphQLString } ,
+        dataNascimento: { type: GraphQLString },
+        rua: { type: GraphQLString },
+        bairro: { type: GraphQLString },
+        cidade: { type: GraphQLString },
+        estado: { type: GraphQLString },
+        pais: { type: GraphQLString },
+        cep: { type: GraphQLString },
+        numero: { type: GraphQLInt },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    deleteClient: {
+      type: ClientType,
+      description: 'delete a client',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    createProduct: {
+      type: ProductType,
+      description: 'add a Product',
+      args: {
+        nome: { type: GraphQLNonNull(GraphQLString) } ,
+        imagem: { type: GraphQLNonNull(GraphQLString) },
+        descricao: { type: GraphQLNonNull(GraphQLString) } ,
+        peso: { type: GraphQLNonNull(GraphQLFloat) },
+        preco: { type: GraphQLNonNull(GraphQLFloat) },
+        quantidadeEmEstoque: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    updateProduct: {
+      type: ProductType,
+      description: 'update a Product',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+        nome: { type: GraphQLString } ,
+        imagem: { type: GraphQLString },
+        descricao: { type: GraphQLString } ,
+        peso: { type: GraphQLFloat },
+        preco: { type: GraphQLFloat },
+        quantidadeEmEstoque: { type: GraphQLInt },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    deleteProduct: {
+      type: ProductType,
+      description: 'delete a Product',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    createOrder: {
+      type: OrderType,
+      description: 'add a Order',
+      args: {
+        products: { type: GraphQLNonNull(GraphQLString) } ,
+        dataCriacao: { type: GraphQLNonNull(GraphQLString) },
+        parcelas: { type: GraphQLNonNull(GraphQLInt) } ,
+        buyerId: { type: GraphQLNonNull(GraphQLInt) },
+        status: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    updateOrder: {
+      type: OrderType,
+      description: 'update a Order',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+        products: { type: GraphQLString } ,
+        dataCriacao: { type: GraphQLString },
+        parcelas: { type: GraphQLInt } ,
+        buyerId: { type: GraphQLInt },
+        status: { type: GraphQLString },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+    deleteOrder: {
+      type: OrderType,
+      description: 'delete a Order',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+
+      },
+    },
+  }),
+});
+
 const schema = new GraphQLSchema({
   query: RootQueryType,
+  mutation: RootMutationType,
 });
 
 app.use('/graphql', graphqlHTTP({
