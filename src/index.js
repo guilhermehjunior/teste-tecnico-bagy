@@ -19,8 +19,13 @@ const {
   orderQueryResolver,
 } = require('./resolvers/query');
 
+const {
+  clientTypeResolver,
+  productByOrderTypeResolver,
+  orderTypeBuyerResolver,
+  orderTypeProductsResolver,
+} = require('./resolvers/type');
 
-const { produtos, clientes, enderecos, pedidos, produtosPorPedido } = require('../mockDataBase');
 const app = express();
 
 
@@ -51,7 +56,7 @@ const ClientType = new GraphQLObjectType({
     enderecoId: { type: GraphQLNonNull(GraphQLInt) },
     endereco: {
       type: AdressType,
-      resolve: (client) => enderecos.find((endereco) => endereco.id === client.enderecoId),
+      resolve: clientTypeResolver,
     }
   }),
 });
@@ -74,13 +79,13 @@ const ProductByOrderType = new GraphQLObjectType({
   name: 'ProductByOrder',
   description: 'products and quantitys in each order',
   fields: () => ({
-    productId: { type: (GraphQLInt) },
-    product: {
+    produtoId: { type: (GraphQLInt) },
+    produto: {
       type: ProductType,
-      resolve: (order) => produtos.find((produto) => produto.id === order.productId),
+      resolve: productByOrderTypeResolver,
     },
-    quantity: { type: (GraphQLInt) },
-    orderId: { type: (GraphQLInt) },
+    quantidade: { type: (GraphQLInt) },
+    pedidoId: { type: (GraphQLInt) },
   }),
 });
 
@@ -89,16 +94,16 @@ const OrderType = new GraphQLObjectType({
   description: 'this represents a client order',
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLInt) },
-    products: {
+    produtos: {
       type: GraphQLList(ProductByOrderType),
-      resolve: (order) => produtosPorPedido.filter((pedido) => pedido.orderId === order.id),
+      resolve: orderTypeProductsResolver,
     },
     dataCriacao: { type: GraphQLNonNull(GraphQLString) },
     parcelas: { type: GraphQLNonNull(GraphQLInt) },
-    buyerId: { type: GraphQLNonNull(GraphQLInt) },
-    buyer: {
+    compradorId: { type: GraphQLNonNull(GraphQLInt) },
+    comprador: {
       type: ClientType,
-      resolve: (order) => clientes.find((cliente) => order.buyerId === cliente.id),
+      resolve: orderTypeBuyerResolver,
     },
   }),
 });

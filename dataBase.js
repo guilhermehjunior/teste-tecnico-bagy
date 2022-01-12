@@ -14,9 +14,9 @@ const queryCreateTableClients =`
   email TEXT NOT NULL,
   cpf TEXT NOT NULL,
   dataNascimento TEXT NOT NULL,
-  idEndereco INTEGER NOT NULL,
+  enderecoId INTEGER NOT NULL,
   PRIMARY KEY (id)
-  FOREIGN KEY (idEndereco)
+  FOREIGN KEY (enderecoId)
     REFERENCES enderecos (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE);`;
@@ -49,26 +49,26 @@ const queryCreateTableOrders = `
   id INTEGER,
   dataPedido TEXT NOT NULL,
   parcelas TEXT NOT NULL,
-  idComprador INTEGER NOT NULL,
+  compradorId INTEGER NOT NULL,
   status TEXT NOT NULL,
   PRIMARY KEY (id)
-  FOREIGN KEY (idComprador)
+  FOREIGN KEY (compradorId)
     REFERENCES clientes (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE);`;
 
 const queryCreateTableOrdersProducts = `
   CREATE TABLE IF NOT EXISTS pedidos_produtos(
-  idProduto INTEGER,
+  produtoId INTEGER,
   quantidade INTEGER NOT NULL,
-  idVenda INTEGER,
-  PRIMARY KEY (idProduto, idVenda),
-  FOREIGN KEY (idProduto) 
-     REFERENCES produtos (idProduto) 
+  pedidoId INTEGER,
+  PRIMARY KEY (produtoId, pedidoId),
+  FOREIGN KEY (produtoId) 
+     REFERENCES produtos (produtoId) 
         ON DELETE CASCADE 
         ON UPDATE NO ACTION,
-  FOREIGN KEY (idVenda) 
-     REFERENCES pedidos (idVenda) 
+  FOREIGN KEY (pedidoId) 
+     REFERENCES pedidos (pedidoId) 
         ON DELETE CASCADE 
         ON UPDATE NO ACTION);`;
 
@@ -77,7 +77,7 @@ const queryInsertAddress = `INSERT INTO enderecos(rua, bairro, cidade, estado, p
   ('Francisco Derosso', 'Xaxim', 'Curitiba', 'PR', 'BR', '82710-320', 3000),
   ('Gabriel Freceiro', 'Cidade Alta', 'Medianeira', 'PR', 'BR', '85884000', 127)`;
 
-const queryInsertClients = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, idEndereco) VALUES
+const queryInsertClients = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, enderecoId) VALUES
   ('Guilherme H Jr', 'guilherme@email.com', '99999999999', '12/07/1992', 1),
   ('Alceu Fonseca', 'fonseca@email.com', '88888888888', '20/09/1990', 2),
   ('Rogerio Andrade', 'rogerio@email.com', '77777777777', '12/02/1980', 3)`;
@@ -87,12 +87,12 @@ const queryInsertProducts = `INSERT INTO produtos(nome, imagem, descricao, peso,
 ('caneta vermelha', 'canetavermelha.png', 'caneta de cor vermelha', 0.1, 1.59, 200),
 ('caneta verde', 'canetaverde.png', 'caneta de cor verde', 0.2, 2.59, 500)`;
 
-const queryInsertOrders= `INSERT INTO pedidos(dataPedido, parcelas, idComprador, status) VALUES
+const queryInsertOrders= `INSERT INTO pedidos(dataPedido, parcelas, compradorId, status) VALUES
 ('31/12/2021', 12, 1, 'ENVIADO'),
 ('01/01/2022', 2, 2, 'EM SEPARAÇÃO'),
 ('11/01/2022', 1, 1, 'EM PROCESSAMENTO')`;
 
-const queryInsertOrdersProducts = `INSERT INTO pedidos_produtos(idProduto, quantidade, idVenda) VALUES
+const queryInsertOrdersProducts = `INSERT INTO pedidos_produtos(produtoId, quantidade, pedidoId) VALUES
 (1, 5, 1),
 (2, 10, 1),
 (3, 2, 1),

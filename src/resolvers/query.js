@@ -32,7 +32,7 @@ const productQueryResolver = (_parent, args) => {
 
 const clientsQueryResolver = () => {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM clients', (err, rows) => {
+    db.all('SELECT * FROM clientes', (err, rows) => {
       if (err) {
         console.log(err.message);
         reject([]);
