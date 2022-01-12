@@ -55,7 +55,7 @@ const ProductType = new GraphQLObjectType({
     descricao: { type: GraphQLString },
     peso: { type: GraphQLFloat },
     preco: { type: GraphQLNonNull(GraphQLFloat) },
-    quantidadeEmEstoque: { type: GraphQLNonNull(GraphQLInt) },
+    estoque: { type: GraphQLNonNull(GraphQLInt) },
   }),
 });
 
@@ -202,7 +202,7 @@ const RootMutationType = new GraphQLObjectType({
         descricao: { type: GraphQLNonNull(GraphQLString) } ,
         peso: { type: GraphQLNonNull(GraphQLFloat) },
         preco: { type: GraphQLNonNull(GraphQLFloat) },
-        quantidadeEmEstoque: { type: GraphQLNonNull(GraphQLInt) },
+        estoque: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: (parent, args) => {
 
@@ -218,7 +218,7 @@ const RootMutationType = new GraphQLObjectType({
         descricao: { type: GraphQLString } ,
         peso: { type: GraphQLFloat },
         preco: { type: GraphQLFloat },
-        quantidadeEmEstoque: { type: GraphQLInt },
+        estoque: { type: GraphQLInt },
       },
       resolve: (parent, args) => {
 
