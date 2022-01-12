@@ -101,16 +101,40 @@ const RootQueryType = new GraphQLObjectType({
       description: 'products list',
       resolve: () => produtos,
     },
+    product: {
+      type: ProductType,
+      description: 'one product by Id',
+      args: {
+        id: { type: GraphQLInt },
+      },
+      resolve: (_parent, args) => produtos.find((produto) => produto.id === args.id),
+    },
     clients: {
       type: GraphQLList(ClientType),
       description: 'clients list',
       resolve: () => clientes,
     },
+    client: {
+      type: ClientType,
+      description: 'one client by Id',
+      args: {
+        id: { type: GraphQLInt },
+      },
+      resolve: (_parent, args) => clientes.find((cliente) => cliente.id === args.id),
+    },
     orders: {
       type: GraphQLList(OrderType),
       description: 'orders list',
       resolve: () => pedidos,
-    }
+    },
+    order: {
+      type: OrderType,
+      description: 'one order by Id',
+      args: {
+        id: { type: GraphQLInt },
+      },
+      resolve: (_parent, args) => pedidos.find((pedido) => pedido.id === args.id),
+    },
   }),
 });
 
