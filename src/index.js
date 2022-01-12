@@ -10,8 +10,15 @@ const {
   GraphQLFloat,
 } = require('graphql');
 
+const {
+  products,
+  product,
+} = require('./resolvers');
+
+
 const { produtos, clientes, enderecos, pedidos, produtosPorPedido } = require('../mockDataBase');
 const app = express();
+
 
 const AdressType = new GraphQLObjectType({
   name: 'Address',
@@ -99,7 +106,7 @@ const RootQueryType = new GraphQLObjectType({
     products: {
       type: GraphQLList(ProductType),
       description: 'products list',
-      resolve: () => produtos,
+      resolve: products,
     },
     product: {
       type: ProductType,
@@ -107,7 +114,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_parent, args) => produtos.find((produto) => produto.id === args.id),
+      resolve: product ,
     },
     clients: {
       type: GraphQLList(ClientType),

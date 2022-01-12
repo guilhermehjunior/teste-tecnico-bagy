@@ -105,7 +105,8 @@ const queryInsertOrdersProducts = `INSERT INTO pedidos_produtos(idProduto, quant
 
 db.serialize(() => {
   // Queries scheduled here will be serialized.
-  db.run(queryCreateTableAddress)
+  db
+    .run(queryCreateTableAddress)
     .run(queryCreateTableClients)
     .run(queryCreateTableProducts)
     .run(queryCreateTableOrders)
@@ -115,11 +116,11 @@ db.serialize(() => {
     .run(queryInsertProducts)
     .run(queryInsertOrders)
     .run(queryInsertOrdersProducts)
-    // .each(`SELECT * FROM produtos`, (err, row) => {
+    // .all(`SELECT * FROM produtos`, (err, rows) => {
     //   if (err){
     //     throw err;
     //   }
-    //   console.log(row);
+    //   console.log(rows);
     // });
 });
 
