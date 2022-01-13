@@ -109,9 +109,160 @@ Como exemplo, a `query` produtos funciona da seguinte forma(obs: a vírgula é o
 }
 ```
 
-Nesse caso estamos solicitando com a `query produtos` que ela retorne todos os produtos no nosso banco de dados e mostre os campos `id`, `nome`, `imagem`, `descrição`, `peso`, `preço` e `estoque`;
+Nesse caso estamos solicitando com a `query produtos` que ela retorne todos os produtos no nosso banco de dados e mostre os campos `id`, `nome`, `imagem`, `descrição`, `peso`, `preço` e `estoque`.
+ Lembrando que não é necessário requisitar o retorno de todos os dados, só aqueles desejados.
 
 O resultado da query é o seguinte:
 
 ![resultado query produtos](./imagens/resultado-produtos.png)
+
+### Query
+
 #### Clientes
+
+A `query` clientes tem a seguinte estrutura e os possíveis dados disponíveis:
+
+```
+{
+  {
+  clientes{
+    id,
+    nomeCompleto
+    email
+    cpf
+    dataNascimento
+    enderecoId
+    endereco{
+      id
+      rua
+      bairro
+      cidade
+      estado
+      pais
+      cep
+      numero
+    }
+  }
+}
+}
+```
+
+#### Cliente
+
+A `query` cliente tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+
+```
+{
+  {
+  cliente(id: idDoClient){
+    id,
+    nomeCompleto
+    email
+    cpf
+    dataNascimento
+    enderecoId
+    endereco{
+      id
+      rua
+      bairro
+      cidade
+      estado
+      pais
+      cep
+      numero
+    }
+  }
+}
+}
+```
+
+#### Produtos
+
+A `query` produtos tem a seguinte estrutura e os possíveis dados disponíveis:
+
+```
+{
+  produtos{
+    id,
+    nome,
+    imagem,
+    descricao,
+    peso
+    preco
+    estoque
+  }
+}
+```
+
+#### Produto
+
+A `query` produto tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+
+
+```
+{
+  produto(id: idDoProduto){
+    id,
+    nome,
+    imagem,
+    descricao,
+    peso
+    preco
+    estoque
+  }
+}
+```
+
+#### Pedidos
+
+A `query` pedidos tem a seguinte estrutura e os possíveis dados disponíveis:
+
+```
+{
+  pedidos{
+    id
+    produtos{
+      produtoId
+      produto{
+        ...produtos(informações disponíveis na query produtos)
+      }
+      quantidade
+      pedidoId
+    }
+    dataPedido
+    parcelas
+    compradorId
+    comprador{
+      ...clientes(informações disponíveis na query clientes)
+    }
+  }
+}
+```
+
+#### Pedido
+
+A `query` pedido tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+
+```
+{
+  pedido(id: idDoPedido){
+    id
+    produtos{
+      produtoId
+      produto{
+        ...produtos(informações disponíveis na query produtos)
+      }
+      quantidade
+      pedidoId
+    }
+    dataPedido
+    parcelas
+    compradorId
+    comprador{
+      ...clientes(informações disponíveis na query clientes)
+    }
+  }
+}
+```
+
+### Mutation
