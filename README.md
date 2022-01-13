@@ -9,7 +9,6 @@ Teste técnico realizado no processo seletivo da bagy
 - [Desenvolvimento](#Desenvolvimento)
 - [Base de Dados](#Base-de-Dados)
 - [Utilizando a API](#Utilizando-a-API)
-
   - [Query](#Query)
     - [Clientes](#clientes)
     - [Cliente](#cliente)
@@ -28,6 +27,7 @@ Teste técnico realizado no processo seletivo da bagy
     - [updateOrder](#updateOrder)
     - [deleteOrder](#deleteOrder)
   - [Multi Query ou Mutation](#Multi-query-ou-mutation)
+- [Estrutura do Código](#Estrutura-do-código)
 
 ## Iniciando o projeto
 
@@ -325,6 +325,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, um cliente é criado no banco de dados.
 
 #### updateClient
 
@@ -342,6 +343,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, os dados de cliente são atualizado no banco de dados.
 
 #### deleteClient
 
@@ -354,6 +356,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, ume cliente é deletado do banco de dados.
 
 #### createProduct
 
@@ -368,6 +371,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, um produto é criado no banco de dados.
 
 #### updateProduct
 
@@ -383,6 +387,7 @@ mutation{
 }
 
 ```
+Nessa mutação, um produto é atualizado no banco de dados.
 
 #### deleteProduct
 
@@ -395,6 +400,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, um cliente é deletado do banco de dados.
 
 #### createOrder
 
@@ -415,6 +421,7 @@ mutation{
   }
 }
 ```
+Nessa mutação, um pedido é criado no banco de dados e os valores dos estoques dos produtos são atualizados automaticamente.
 
 #### updateOrder
 
@@ -436,6 +443,8 @@ mutation{
 }
 ```
 
+Nessa mutação, um pedido é atualizado no banco de dados.
+
 #### deleteOrder
 
 A `mutation` deleteOrder tem a seguinte estrutura e nela é obrigatório passar o dado: `id` e como retorno ele passa uma mensagem confirmando que o item foi deletado.
@@ -447,6 +456,8 @@ mutation{
   }
 }
 ```
+
+Nessa mutação, um pedido é deletado do banco de dados.
 
 ### Multi Query ou Mutation
 
@@ -477,3 +488,15 @@ query{
 A imagem a seguir demonstra o retorno dessa query:
 
 ![resultado multi query](./imagens/resultado-multi-query.png)
+
+## Estrutura do Código
+
+O código foi dividido da seguinte forma: na raiz do projeto ficaram o `arquivo de banco de dados e o arquivo utilizado para gerá-lo e a pasta src`, onde estão localizados os arquivos referentes a API.
+
+Dentro da pasta `src`, os arquivos foram dividos de acordo com suas funções:
+
+- no `index.js` está a base da API.
+- na pasta `resolvers` estão as funções para o resolve dividas em `types, query, mutation`, dentro desta última os arquivos foram dividos por qual tabela influenciavam (`clients, orders, products`).
+- no arquivo `schemaMutations.js` ficou o objeto graphQlreferente as `mutation`.
+- no arquivo `schemaQueries.js` ficou o objeto graphQl referente as `query`.
+- no arquivo `types.js` ficou o objeto graphQl referente aos `types`.
