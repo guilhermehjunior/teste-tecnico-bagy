@@ -35,7 +35,8 @@ const {
   createProductResolver,
   createOrderResolver,
   updateClientResolver,
-  updateProductResolver
+  updateProductResolver,
+  updateOrderResolver
 } = require('./resolvers/mutations');
 
 const app = express();
@@ -281,11 +282,9 @@ const RootMutationType = new GraphQLObjectType({
         parcelas: { type: GraphQLNonNull(GraphQLInt) } ,
         compradorId: { type: GraphQLNonNull(GraphQLInt) },
         status: { type: GraphQLNonNull(GraphQLString) },
-        quantidade: { type: GraphQLNonNull(GraphQLInt) },
+        quantidade: { type: GraphQLNonNull(GraphQLList(GraphQLInt)) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: updateOrderResolver,
     },
     deleteOrder: {
       type: deleteType,

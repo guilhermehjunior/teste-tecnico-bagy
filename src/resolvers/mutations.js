@@ -215,7 +215,40 @@ const createOrderResolver = (_parent, args) => {
           resolve(row);
         }); 
       });
-      
+  });
+};
+
+const updateOrderResolver = (_parent, args) => {
+  return new Promise((resolve, reject) => {
+    const {
+      id,
+      produtos,
+      dataPedido,
+      parcelas,
+      compradorId,
+      status,
+      quantidade,
+    } = args;
+
+    const queryUpdateOrder = `UPDATE pedidos
+    SET dataPedido = (?), parcelas = (?), compradorId = (?), status = (?)
+    WHERE id = (?)`;
+    const querySelectOrder = `SELECT * FROM pedidos WHERE id = (?)`;
+    const queryUpdateOrderProduct = `UPDATE pedidos_produtos
+    SET quantidade = (?)
+    WHERE pedidoId = (?) AND produtoId = (?)`;
+
+    db.run(queryUpdateOrder, [dataPedido, parcelas, compradorId, status, id])
+    produtos.forEach((produtoId, index) => {
+      db.run(queryUpdateOrderProduct, [quantidade[index], id, produtoId]);
+    });
+    db.get(querySelectOrder, [id], (err, row) => {
+      if (err) {
+        console.log(err.message);
+        reject(null);
+      }
+      resolve(row);
+    });     
   });
 };
 
@@ -239,4 +272,5 @@ module.exports = {
   createOrderResolver,
   updateClientResolver,
   updateProductResolver,
+  updateOrderResolver,
 };
