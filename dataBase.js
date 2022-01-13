@@ -65,12 +65,12 @@ const queryCreateTableOrdersProducts = `
   PRIMARY KEY (produtoId, pedidoId),
   FOREIGN KEY (produtoId) 
      REFERENCES produtos (produtoId) 
-        ON DELETE CASCADE 
-        ON UPDATE NO ACTION,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
   FOREIGN KEY (pedidoId) 
      REFERENCES pedidos (pedidoId) 
-        ON DELETE CASCADE 
-        ON UPDATE NO ACTION);`;
+        ON DELETE CASCADE
+        ON UPDATE CASCADE);`;
 
 const queryInsertAddress = `INSERT INTO enderecos(rua, bairro, cidade, estado, país, cep, número) VALUES
   ('Santo Garbuio', 'Xaxim', 'Curitiba', 'PR', 'BR', '81710-320', 127),

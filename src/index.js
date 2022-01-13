@@ -26,6 +26,12 @@ const {
   orderTypeProductsResolver,
 } = require('./resolvers/type');
 
+const {
+  deleteClientResolver,
+  deleteOrderResolver,
+  deleteProductResolver,
+} = require('./resolvers/mutations');
+
 const app = express();
 
 
@@ -108,6 +114,14 @@ const OrderType = new GraphQLObjectType({
   }),
 });
 
+const deleteType = new GraphQLObjectType({
+  name: 'Delete',
+  description: 'type for messaging when deleting',
+  fields: () => ({
+    message: { type: GraphQLNonNull(GraphQLString) }
+  }),
+});
+
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
@@ -134,7 +148,7 @@ const RootQueryType = new GraphQLObjectType({
       type: ClientType,
       description: 'one client by Id',
       args: {
-        id: { type: GraphQLInt },
+        id: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: clientQueryResolver,
     },
@@ -147,7 +161,7 @@ const RootQueryType = new GraphQLObjectType({
       type: OrderType,
       description: 'one order by Id',
       args: {
-        id: { type: GraphQLInt },
+        id: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: orderQueryResolver,
     },
@@ -200,14 +214,12 @@ const RootMutationType = new GraphQLObjectType({
       },
     },
     deleteClient: {
-      type: ClientType,
+      type: deleteType,
       description: 'delete a client',
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: deleteClientResolver,
     },
     createProduct: {
       type: ProductType,
@@ -241,20 +253,18 @@ const RootMutationType = new GraphQLObjectType({
       },
     },
     deleteProduct: {
-      type: ProductType,
+      type: deleteType,
       description: 'delete a Product',
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: deleteProductResolver,
     },
     createOrder: {
       type: OrderType,
       description: 'add a Order',
       args: {
-        products: { type: GraphQLNonNull(GraphQLString) } ,
+        products: { type: GraphQLNonNull(GraphQLList(GraphQLInt)) } ,
         dataCriacao: { type: GraphQLNonNull(GraphQLString) },
         parcelas: { type: GraphQLNonNull(GraphQLInt) } ,
         buyerId: { type: GraphQLNonNull(GraphQLInt) },
@@ -280,14 +290,12 @@ const RootMutationType = new GraphQLObjectType({
       },
     },
     deleteOrder: {
-      type: OrderType,
+      type: deleteType,
       description: 'delete a Order',
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: deleteOrderResolver,
     },
   }),
 });
