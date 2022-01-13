@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('./teste-bagy.db', (err) => {
+let db = new sqlite3.Database('teste-bagy.db', (err) => {
   if (err) {
     console.error(err.message);
   }
@@ -29,9 +29,7 @@ const createClientResolver = (_parent, args) => {
     VALUES ((?), (?), (?), (?), (?))`;
     const queryClientes2 = `SELECT * FROM clientes WHERE nomeCompleto = (?)`;
 
-    db.run(queryEndereco, [rua, bairro, cidade, estado, pais, cep, numero], (_err) => {
-      console.log(this);
-    });
+    db.run(queryEndereco, [rua, bairro, cidade, estado, pais, cep, numero]);
     db.get(queryEndereco2, [rua, numero, cidade], (err, { id }) => {
       if (err) {
         console.log(err.message);
@@ -46,6 +44,50 @@ const createClientResolver = (_parent, args) => {
           resolve(row);
         });
     });
+  });
+};
+
+const updateClientResolver = (_parent, args) => {
+  return new Promise((resolve, reject) => {
+    const {
+      id,
+      nomeCompleto,
+      email,
+      cpf,
+      dataNascimento,
+      rua,
+      bairro,
+      cidade,
+      estado,
+      pais,
+      cep,
+      numero,
+    } = args;
+  
+    const queryCliente = `UPDATE clientes
+    SET nomeCompleto = (?), email = (?), cpf = (?), dataNascimento = (?)
+    WHERE id = (?)`;
+    const queryCliente2 = `SELECT * FROM clientes WHERE id = (?)`;
+    const queryEndereco = `UPDATE enderecos
+    SET rua = (?), bairro = (?), cidade = (?), estado = (?), pais = (?), cep = (?), numero = (?)
+    WHERE id = (?)`;
+  
+    db.run(queryCliente, [nomeCompleto, email, cpf, dataNascimento, id]);
+    db.get(queryCliente2, [id], (err, { enderecoId }) => {
+      if (err) {
+        console.log(err.message);
+        reject(null);
+      }
+      db.run(queryEndereco, [rua, bairro, cidade, estado, pais, cep, numero, enderecoId]);
+      db.get(queryCliente2, [id], (err, row) => {
+        if (err) {
+          console.log(err.message);
+          reject(null);
+        }
+        resolve(row);
+      });
+    });
+    
   });
 };
 
@@ -159,4 +201,5 @@ module.exports = {
   createClientResolver,
   createProductResolver,
   createOrderResolver,
+  updateClientResolver,
 };

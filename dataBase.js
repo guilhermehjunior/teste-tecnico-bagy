@@ -1,7 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+
+const dbPath = path.resolve(__dirname, 'teste-bagy.db');
 
 // open the database connection
-let db = new sqlite3.Database('./teste-bagy.db', (err) => {
+let db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error(err.message);
   }
