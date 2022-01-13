@@ -124,7 +124,6 @@ A `query` clientes tem a seguinte estrutura e os possíveis dados disponíveis:
 
 ```
 {
-  {
   clientes{
     id,
     nomeCompleto
@@ -144,16 +143,14 @@ A `query` clientes tem a seguinte estrutura e os possíveis dados disponíveis:
     }
   }
 }
-}
 ```
 
 #### Cliente
 
-A `query` cliente tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+A `query` cliente tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o `id` do produto desejado:
 
 ```
 {
-  {
   cliente(id: idDoClient){
     id,
     nomeCompleto
@@ -172,7 +169,6 @@ A `query` cliente tem a seguinte estrutura e os possíveis dados disponíveis, n
       numero
     }
   }
-}
 }
 ```
 
@@ -196,7 +192,7 @@ A `query` produtos tem a seguinte estrutura e os possíveis dados disponíveis:
 
 #### Produto
 
-A `query` produto tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+A `query` produto tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o `id` do produto desejado:
 
 
 ```
@@ -241,7 +237,7 @@ A `query` pedidos tem a seguinte estrutura e os possíveis dados disponíveis:
 
 #### Pedido
 
-A `query` pedido tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o id do produto desejado:
+A `query` pedido tem a seguinte estrutura e os possíveis dados disponíveis, nela é obrigatório passar o `id` do produto desejado:
 
 ```
 {
@@ -265,4 +261,28 @@ A `query` pedido tem a seguinte estrutura e os possíveis dados disponíveis, ne
 }
 ```
 
-### Mutation
+### Mutations
+
+Na hora de realizar mutations é necessário acrescentar o termo `mutation` antes de realizar a requisição, um exemplo a seguir da createClient:
+
+```
+mutation{
+  createClient(nomeCompleto: "", email: "", cpf:"", dataNascimento:"", rua: "", bairro: "", cidade: "", estado: "", pais: "", cep: "", numero: 123){
+    id
+    nomeCompleto
+    endereco{
+      id
+      rua
+    }
+  }
+}
+```
+
+Nela são obrigatório os seguintes dados: `nomeCompleto`, `email`, `cpf`, `dataNascimento`, `rua`, `bairro`, `cidade`, `estado`, `pais`, `cep` e `numero` e como retorno ele passa as informações desejadas iguais da `query`
+[client](#client).
+
+![resultado mutation createClient](./imagens/resultado-create-client.png)
+
+#### createClient
+
+A `mutation` createClient tem a seguinte estrutura e nela é obrigatório passar os dados `nomeCompleto, email, cpf`
