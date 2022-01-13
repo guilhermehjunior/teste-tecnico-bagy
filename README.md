@@ -364,7 +364,90 @@ A `mutation` deleteProduct tem a seguinte estrutura e nela é obrigatório passa
 
 ```
 mutation{
-  deleteProduct(id: idDoCliente){
+  deleteProduct(id: idDoProduto){
     message
   }
 }
+```
+
+#### createOrder
+
+A `mutation` createOrder tem a seguinte estrutura e nela é obrigatório passar os dados: `produtos`, `dataPedido`, `parcelas`, `compradorId`, `status`, `quantidade`,  e como retorno ele passa as informações desejadas iguais da `query`[pedido](#pedido).
+
+```
+mutation{
+  createOrder(produtos: array com Id dos produtos, dataPedido:string, parcelas: int, compradorId: idDoClient, status: string, quantidades:array com as quantidades dos produtos){
+    id
+    produtos{
+      produto {
+        id
+        nome
+      }
+      quantidade
+    }
+    parcelas
+  }
+}
+```
+
+#### updateOrder
+
+A `mutation` updateOrder tem a seguinte estrutura e nela é obrigatório passar os dados: `id`, `produtos`, `dataPedido`, `parcelas`, `compradorId`, `status`, `quantidade`,  e como retorno ele passa as informações desejadas iguais da `query`[pedido](#pedido).
+
+```
+mutation{
+  createOrder(id: idDoPedido, produtos: array com Id dos produtos, dataPedido:string, parcelas: int, compradorId: idDoClient, status: string, quantidades:array com as quantidades dos produtos){
+    id
+    produtos{
+      produto {
+        id
+        nome
+      }
+      quantidade
+    }
+    parcelas
+  }
+}
+```
+
+#### deleteOrder
+
+A `mutation` deleteOrder tem a seguinte estrutura e nela é obrigatório passar o dado: `id` e como retorno ele passa uma mensagem confirmando que o item foi deletado.
+
+```
+mutation{
+  deleteOrder(id: idDoPedido){
+    message
+  }
+}
+```
+
+### Multi Query ou Mutation
+
+Em uma única `query` ou `mutation` é possível realizar requisições diversas com outras `query` ou `mutation`.
+
+Como exemplo abaixo, será feito uma requisição para receber um `cliente` e um `produto` onde são retornados apenas alguns campos.
+
+```
+query{
+  cliente(id: 2){
+    nomeCompleto,
+    email,
+    endereco{
+      id
+      cidade
+      estado
+    }
+  }
+  produto(id: 1){
+    nome,
+    descricao,
+    estoque
+    preco
+  }
+}
+```
+
+A imagem a seguir demonstra o retorno dessa query:
+
+![resultado multi query](./imagens/resultado-multi-query.png)
