@@ -5,7 +5,7 @@ Teste técnico realizado no processo seletivo da bagy
 
 ## Iniciando o projeto
 
-Para clonar esse repositório para o seu computador, abra o terminal e execute o seguinte comando: 
+Para clonar esse repositório para o seu computador utilizando a chave SSH, abra o terminal e execute o seguinte comando: 
 
 ```sh
 git clone git@github.com:guilhermehjunior/teste-tecnico-bagy.git
@@ -23,8 +23,11 @@ Para o desenvolvimento dessa API foram utilizadas as stacks `node.js`, `graphql`
 As seguintes bibliotecas foram utilizadas:
 
   -express(`node.js`)
+
   -express-graphql(ligação entre `node.js` e `graphql`)
+
   -graphql(`graphql`)
+
   -sqlite3(`SQLite`)
 
 ## Base de Dados
@@ -57,20 +60,58 @@ Nesse API de GraphQL é possível fazer 2 tipos de requisições, as `query` e a
 As `query` disponíveis nesse projeto são:
 
   -clientes
+
   -cliente
+
   -produtos
+
   -produto
+
   -pedidos
+
   -pedido
 
 As `mutation` disponíveis são: 
 
   -createClient
+
   -updateClient
+
   -deleteClient
+
   -createProduct
+
   -updateProduct
+
   -deleteProduct
+
   -createOrder
+
   -updateOrder
+
   -deleteOrder
+
+A GraphQL faz com que as requisições sejam feitas de modo 'gráfico', a pessoa escreve a query ou mutation que deseja e os campos que deseja receber.
+
+Como exemplo, a `query` produtos funciona da seguinte forma(obs: a vírgula é opcional):
+
+```
+{
+  produtos{
+    id,
+    nome,
+    imagem,
+    descricao,
+    peso
+    preco
+    estoque
+  }
+}
+```
+
+Nesse caso estamos solicitando com a `query produtos` que ela retorne todos os produtos no nosso banco de dados e mostre os campos `id`, `nome`, `imagem`, `descrição`, `peso`, `preço` e `estoque`;
+
+O resultado da query é o seguinte:
+
+![resultado query produtos](./imagens/resultado-produtos.png)
+#### Clientes
