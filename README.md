@@ -6,11 +6,27 @@ Teste técnico realizado no processo seletivo da bagy
 ## Sumário
 
 -[Iniciando o Projeto](#Iniciando-o-projeto)
-
 -[Desenvolvimento](#Desenvolvimento)
-
 -[Base de Dados](#Base-de-Dados)
-
+-[Utilizando a API](#Utilizando-a-API)
+  -[Query](#Query)
+    -[Clientes](#clientes)
+    -[Cliente](#cliente)
+    -[Produtos](#Produtos)
+    -[Produto](#Produto)
+    -[Pedidos](#Pedidos)
+    -[Pedido](#Pedido)
+  -[Mutation](#Mutation)
+    -[createClient](#createClient)
+    -[updateClient](#updateClient)
+    -[deleteClient](#deleteClient)
+    -[createProduct](#createProduct)
+    -[updateProduct](#updateProduct)
+    -[deleteProduct](#deleteProduct)
+    -[createOrder](#createOrder)
+    -[updateOrder](#updateOrder)
+    -[deleteOrder](#deleteOrder)
+  -[Multi Query ou Mutation](#Multi-query-ou-mutation)
 
 ## Iniciando o projeto
 
