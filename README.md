@@ -47,3 +47,30 @@ Para iniciar a API e utilizá-la basta executar o comando:
 ```sh
 npm start
 ```
+
+Após isso acesse em seu navegador o endpoint `http://localhost:3000/graphql`, nele você vai encontrar uma interface(`GraphiQL`) para realizar as requisições desejadas.
+
+Nesse API de GraphQL é possível fazer 2 tipos de requisições, as `query` e as `mutation`.
+
+`query` são requisições que buscam informação no banco de dado e `mutation` são requisições que alteram o banco de dados.
+
+As `query` disponíveis nesse projeto são:
+
+  -clientes
+  -cliente
+  -produtos
+  -produto
+  -pedidos
+  -pedido
+
+As `mutation` disponíveis são: 
+
+  -createClient
+  -updateClient
+  -deleteClient
+  -createProduct
+  -updateProduct
+  -deleteProduct
+  -createOrder
+  -updateOrder
+  -deleteOrder
