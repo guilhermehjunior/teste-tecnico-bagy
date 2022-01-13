@@ -30,6 +30,9 @@ const {
   deleteClientResolver,
   deleteOrderResolver,
   deleteProductResolver,
+  createClientResolver,
+  createProductResolver,
+  createOrderResolver,
 } = require('./resolvers/mutations');
 
 const app = express();
@@ -58,7 +61,7 @@ const ClientType = new GraphQLObjectType({
     nomeCompleto: { type: GraphQLNonNull(GraphQLString) },
     email: { type: GraphQLNonNull(GraphQLString) },
     cpf: { type: GraphQLNonNull(GraphQLString) },
-    dataDeNascimento: { type: GraphQLNonNull(GraphQLString) },
+    dataNascimento: { type: GraphQLNonNull(GraphQLString) },
     enderecoId: { type: GraphQLNonNull(GraphQLInt) },
     endereco: {
       type: AdressType,
@@ -104,7 +107,7 @@ const OrderType = new GraphQLObjectType({
       type: GraphQLList(ProductByOrderType),
       resolve: orderTypeProductsResolver,
     },
-    dataCriacao: { type: GraphQLNonNull(GraphQLString) },
+    dataPedido: { type: GraphQLNonNull(GraphQLString) },
     parcelas: { type: GraphQLNonNull(GraphQLInt) },
     compradorId: { type: GraphQLNonNull(GraphQLInt) },
     comprador: {
@@ -174,11 +177,11 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => ({
     createClient: {
       type: ClientType,
-      description: 'add a client',
+      description: 'add a client and his address',
       args: {
         nomeCompleto: { type: GraphQLNonNull(GraphQLString) } ,
         email: { type: GraphQLNonNull(GraphQLString) },
-        CPF: { type: GraphQLNonNull(GraphQLString) } ,
+        cpf: { type: GraphQLNonNull(GraphQLString) } ,
         dataNascimento: { type: GraphQLNonNull(GraphQLString) },
         rua: { type: GraphQLNonNull(GraphQLString) },
         bairro: { type: GraphQLNonNull(GraphQLString) },
@@ -188,9 +191,7 @@ const RootMutationType = new GraphQLObjectType({
         cep: { type: GraphQLNonNull(GraphQLString) },
         numero: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: createClientResolver,
     },
     updateClient: {
       type: ClientType,
@@ -232,9 +233,7 @@ const RootMutationType = new GraphQLObjectType({
         preco: { type: GraphQLNonNull(GraphQLFloat) },
         estoque: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: createProductResolver,
     },
     updateProduct: {
       type: ProductType,
@@ -264,26 +263,26 @@ const RootMutationType = new GraphQLObjectType({
       type: OrderType,
       description: 'add a Order',
       args: {
-        products: { type: GraphQLNonNull(GraphQLList(GraphQLInt)) } ,
-        dataCriacao: { type: GraphQLNonNull(GraphQLString) },
+        produtos: { type: GraphQLNonNull(GraphQLList(GraphQLInt)) } ,
+        dataPedido: { type: GraphQLNonNull(GraphQLString) },
         parcelas: { type: GraphQLNonNull(GraphQLInt) } ,
-        buyerId: { type: GraphQLNonNull(GraphQLInt) },
+        compradorId: { type: GraphQLNonNull(GraphQLInt) },
         status: { type: GraphQLNonNull(GraphQLString) },
+        quantidade: { type: GraphQLNonNull(GraphQLList(GraphQLInt)) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: createOrderResolver,
     },
     updateOrder: {
       type: OrderType,
       description: 'update a Order',
       args: {
         id: { type: GraphQLNonNull(GraphQLInt) },
-        products: { type: GraphQLString } ,
-        dataCriacao: { type: GraphQLString },
+        produtos: { type: GraphQLString } ,
+        dataPedido: { type: GraphQLString },
         parcelas: { type: GraphQLInt } ,
-        buyerId: { type: GraphQLInt },
+        compradorId: { type: GraphQLInt },
         status: { type: GraphQLString },
+        quantidade: { type: GraphQLNonNull(GraphQLInt) },
       },
       resolve: (parent, args) => {
 

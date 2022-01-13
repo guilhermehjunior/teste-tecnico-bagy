@@ -28,9 +28,9 @@ const queryCreateTableAddress = `
   bairro TEXT NOT NULL,
   cidade TEXT NOT NULL,
   estado TEXT NOT NULL,
-  país TEXT NOT NULL,
+  pais TEXT NOT NULL,
   cep TEXT NOT NULL,
-  número INTEGER NOT NULL,
+  numero INTEGER NOT NULL,
   PRIMARY KEY (id));`;
 
 const queryCreateTableProducts = `
@@ -72,7 +72,7 @@ const queryCreateTableOrdersProducts = `
         ON DELETE CASCADE
         ON UPDATE CASCADE);`;
 
-const queryInsertAddress = `INSERT INTO enderecos(rua, bairro, cidade, estado, país, cep, número) VALUES
+const queryInsertAddress = `INSERT INTO enderecos(rua, bairro, cidade, estado, pais, cep, numero) VALUES
   ('Santo Garbuio', 'Xaxim', 'Curitiba', 'PR', 'BR', '81710-320', 127),
   ('Francisco Derosso', 'Xaxim', 'Curitiba', 'PR', 'BR', '82710-320', 3000),
   ('Gabriel Freceiro', 'Cidade Alta', 'Medianeira', 'PR', 'BR', '85884000', 127)`;
