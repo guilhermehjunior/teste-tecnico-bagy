@@ -267,7 +267,7 @@ Na hora de realizar mutations é necessário acrescentar o termo `mutation` ante
 
 ```
 mutation{
-  createClient(nomeCompleto: "", email: "", cpf:"", dataNascimento:"", rua: "", bairro: "", cidade: "", estado: "", pais: "", cep: "", numero: 123){
+  createClient(nomeCompleto: string, email: string, cpf:string, dataNascimento:string, rua: string, bairro: string, cidade: string, estado: string, pais: string, cep: string, numero: int){
     id
     nomeCompleto
     endereco{
@@ -279,10 +279,92 @@ mutation{
 ```
 
 Nela são obrigatório os seguintes dados: `nomeCompleto`, `email`, `cpf`, `dataNascimento`, `rua`, `bairro`, `cidade`, `estado`, `pais`, `cep` e `numero` e como retorno ele passa as informações desejadas iguais da `query`
-[client](#client).
+[cliente](#cliente).
 
 ![resultado mutation createClient](./imagens/resultado-create-client.png)
 
 #### createClient
 
-A `mutation` createClient tem a seguinte estrutura e nela é obrigatório passar os dados `nomeCompleto, email, cpf`
+A `mutation` createClient tem a seguinte estrutura e nela é obrigatório passar os dados `nomeCompleto`, `email`, `cpf`, `dataNascimento`, `rua`, `bairro`, `cidade`, `estado`, `pais`, `cep`, e e como retorno ele passa as informações desejadas iguais da `query`[cliente](#cliente).
+
+```
+mutation{
+  createClient(nomeCompleto: string, email: string, cpf:string, dataNascimento:string, rua: string, bairro: string, cidade: string, estado: string, pais: string, cep: string, numero: int){
+    id
+    nomeCompleto
+    endereco{
+      id
+      rua
+    }
+  }
+}
+```
+
+#### updateClient
+
+A `mutation` updateClient tem a seguinte estrutura e nela é obrigatório passar os dados: `id`, `nomeCompleto`, `email`, `cpf`, `dataNascimento`, `rua`, `bairro`, `cidade`, `estado`, `pais`, `cep`, e `numero` e como retorno ele passa as informações desejadas iguais da `query`[cliente](#cliente).
+
+```
+mutation{
+  updateClient(id: idDoCliente,nomeCompleto: string, email: string, cpf:string, dataNascimento:string, rua: string, bairro: string, cidade: string, estado: string, pais: string, cep: string, numero: int){
+    id
+    nomeCompleto
+    endereco{
+      id
+      rua
+    }
+  }
+}
+```
+
+#### deleteClient
+
+A `mutation` deleteClient tem a seguinte estrutura e nela é obrigatório passar o dado: `id` e como retorno ele passa uma mensagem confirmando que o item foi deletado.
+
+```
+mutation{
+  deleteClient(id: idDoCliente){
+    message
+  }
+}
+```
+
+#### createProduct
+
+A `mutation` createProduct tem a seguinte estrutura e nela é obrigatório passar os dados: `nome`, `imagem`, `descricao`, `peso`, `preco`, `estoque`,  e como retorno ele passa as informações desejadas iguais da `query`[produto](#produto).
+
+```
+mutation{
+  createProduct(nome:string, imagem:string, descricao:string, peso: float, preco: float ,estoque: int){
+    id,
+    nome,
+    estoque
+  }
+}
+```
+
+#### updateProduct
+
+A `mutation` updateProduct tem a seguinte estrutura e nela é obrigatório passar os dados: `id`, `nome`, `imagem`, `descricao`, `peso`, `preco`, `estoque`,  e como retorno ele passa as informações desejadas iguais da `query`[produto](#produto).
+
+```
+mutation{
+  updateProduct(id: idDoProduto, nome:string, imagem:string, descricao:string, peso: float, preco: float, estoque: int){
+    id,
+    nome,
+    estoque
+  }
+}
+
+```
+
+#### deleteProduct
+
+A `mutation` deleteProduct tem a seguinte estrutura e nela é obrigatório passar o dado: `id` e como retorno ele passa uma mensagem confirmando que o item foi deletado.
+
+```
+mutation{
+  deleteProduct(id: idDoCliente){
+    message
+  }
+}
