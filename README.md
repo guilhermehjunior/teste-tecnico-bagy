@@ -3,6 +3,15 @@ Teste técnico realizado no processo seletivo da bagy
 
 # Boas vindas ao repositório do teste técnico da Bagy!
 
+## Sumário
+
+-[Iniciando o Projeto](#Iniciando-o-projeto)
+
+-[Desenvolvimento](#Desenvolvimento)
+
+-[Base de Dados](#Base-de-Dados)
+
+
 ## Iniciando o projeto
 
 Para clonar esse repositório para o seu computador utilizando a chave SSH, abra o terminal e execute o seguinte comando: 
@@ -281,7 +290,7 @@ mutation{
 Nela são obrigatório os seguintes dados: `nomeCompleto`, `email`, `cpf`, `dataNascimento`, `rua`, `bairro`, `cidade`, `estado`, `pais`, `cep` e `numero` e como retorno ele passa as informações desejadas iguais da `query`
 [cliente](#cliente).
 
-![resultado mutation createClient](./imagens/resultado-create-client.png)
+![resultado mutation createClient](./imagens/resultado-create-cliente.png)
 
 #### createClient
 
