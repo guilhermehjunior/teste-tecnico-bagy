@@ -22,21 +22,21 @@ const createClientResolver = (_parent, args) => {
       numero,
     } = args;
 
-    const queryEndereco = `INSERT INTO enderecos(rua, bairro, cidade, estado, pais, cep, numero)
+    const queryInsertEndereco = `INSERT INTO enderecos(rua, bairro, cidade, estado, pais, cep, numero)
     VALUES ((?), (?), (?), (?), (?), (?), (?))`;
-    const queryEndereco2 = `SELECT id FROM enderecos WHERE rua = (?) AND numero = (?) AND cidade = (?)`;
-    const queryClientes = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, enderecoId)
+    const querySelectEnderecoId = `SELECT last_insert_rowid() as id`;
+    const queryInsertClientes = `INSERT INTO clientes(nomeCompleto, email, cpf, dataNascimento, enderecoId)
     VALUES ((?), (?), (?), (?), (?))`;
-    const queryClientes2 = `SELECT * FROM clientes WHERE nomeCompleto = (?)`;
+    const querySelectClientes = `SELECT * FROM clientes WHERE nomeCompleto = (?)`;
 
-    db.run(queryEndereco, [rua, bairro, cidade, estado, pais, cep, numero]);
-    db.get(queryEndereco2, [rua, numero, cidade], (err, { id }) => {
+    db.run(queryInsertEndereco, [rua, bairro, cidade, estado, pais, cep, numero]);
+    db.get(querySelectEnderecoId, (err, { id }) => {
       if (err) {
         console.log(err.message);
         reject(null);
       }
-      db.run(queryClientes, [nomeCompleto, email, cpf, dataNascimento, id])
-        .get(queryClientes2, [nomeCompleto], (err, row) => {
+      db.run(queryInsertClientes, [nomeCompleto, email, cpf, dataNascimento, id])
+        .get(querySelectClientes, [nomeCompleto], (err, row) => {
           if (err) {
             console.log(err.message);
             reject(null);
@@ -64,22 +64,22 @@ const updateClientResolver = (_parent, args) => {
       numero,
     } = args;
   
-    const queryCliente = `UPDATE clientes
+    const queryUpdateCliente = `UPDATE clientes
     SET nomeCompleto = (?), email = (?), cpf = (?), dataNascimento = (?)
     WHERE id = (?)`;
-    const queryCliente2 = `SELECT * FROM clientes WHERE id = (?)`;
-    const queryEndereco = `UPDATE enderecos
+    const querySelectCliente = `SELECT * FROM clientes WHERE id = (?)`;
+    const queryUpdateEndereco = `UPDATE enderecos
     SET rua = (?), bairro = (?), cidade = (?), estado = (?), pais = (?), cep = (?), numero = (?)
     WHERE id = (?)`;
   
-    db.run(queryCliente, [nomeCompleto, email, cpf, dataNascimento, id]);
-    db.get(queryCliente2, [id], (err, { enderecoId }) => {
+    db.run(queryUpdateCliente, [nomeCompleto, email, cpf, dataNascimento, id]);
+    db.get(querySelectCliente, [id], (err, { enderecoId }) => {
       if (err) {
         console.log(err.message);
         reject(null);
       }
-      db.run(queryEndereco, [rua, bairro, cidade, estado, pais, cep, numero, enderecoId]);
-      db.get(queryCliente2, [id], (err, row) => {
+      db.run(queryUpdateEndereco, [rua, bairro, cidade, estado, pais, cep, numero, enderecoId]);
+      db.get(querySelectCliente, [id], (err, row) => {
         if (err) {
           console.log(err.message);
           reject(null);
@@ -93,7 +93,8 @@ const updateClientResolver = (_parent, args) => {
 
 const deleteClientResolver = (_parent, args) => {
   return new Promise((resolve, reject) => {
-    db.run('DELETE FROM clientes WHERE id = (?)', [args.id]);
+    const deleteClientQuery = `DELETE FROM clientes WHERE id = (?)`;
+    db.run(deleteClientQuery, [args.id]);
     resolve({ message: 'Cliente deletado com sucesso!' });
     reject({ message: 'Algum erro aconteceu.' });
   });
@@ -110,12 +111,41 @@ const createProductResolver = (_parent, args) => {
       estoque,
     } = args;
 
-    const queryProduct = `INSERT INTO produtos(nome, imagem, descricao, peso, preco, estoque)
+    const queryInsertProduct = `INSERT INTO produtos(nome, imagem, descricao, peso, preco, estoque)
     VALUES ((?), (?), (?), (?), (?), (?))`;
-    const queryProduct2 = `SELECT * FROM produtos WHERE nome = (?) AND preco = (?)`;
+    const querySelectProduct = `SELECT * FROM produtos
+    WHERE nome = (?) AND imagem = (?) AND descricao = (?) AND peso = (?) AND preco = (?) AND estoque = (?)`;
 
-    db.run(queryProduct, [nome, imagem, descricao, peso, preco, estoque])
-      .get(queryProduct2, [nome, preco], (err, row) => {
+    db.run(queryInsertProduct, [nome, imagem, descricao, peso, preco, estoque])
+      .get(querySelectProduct, [nome, imagem, descricao, peso, preco, estoque], (err, row) => {
+        if (err) {
+          console.log(err.message);
+          reject(null);
+        }
+        resolve(row);
+      });
+  });
+};
+
+const updateProductResolver = (_parent, args) => {
+  return new Promise((resolve, reject) => {
+    const {
+      id,
+      nome,
+      imagem,
+      descricao,
+      peso,
+      preco,
+      estoque,
+    } = args;
+
+    const queryUpdateProduct = `UPDATE produtos
+    SET nome = (?), imagem = (?), descricao = (?), peso = (?), preco = (?), estoque = (?)
+    WHERE id = (?)`;
+    const querySelectProduct = `SELECT * FROM produtos WHERE id = (?)`;
+
+    db.run(queryUpdateProduct, [nome, imagem, descricao, peso, preco, estoque, id])
+      .get(querySelectProduct, [id], (err, row) => {
         if (err) {
           console.log(err.message);
           reject(null);
@@ -127,23 +157,24 @@ const createProductResolver = (_parent, args) => {
 
 const deleteProductResolver = (_parent, args) => {
   return new Promise((resolve, reject) => {
-    db.run('DELETE FROM produtos WHERE id = (?)', [args.id]);
+    const deleteProductQuery = `DELETE FROM produtos WHERE id = (?)`;
+    db.run(deleteProductQuery, [args.id]);
     resolve({ message: 'Produto deletado com sucesso!' });
     reject({ message: 'Algum erro aconteceu.' });
   });
 };
 
 const updateQuantity = (productId, quantity) => {
-  const queryProduct = `SELECT estoque FROM produtos WHERE id = (?)`;
-  const queryProduct2 = `UPDATE produtos SET estoque = (?) WHERE id = (?)`;
+  const querySelectProduct = `SELECT estoque FROM produtos WHERE id = (?)`;
+  const queryUpdateProduct = `UPDATE produtos SET estoque = (?) WHERE id = (?)`;
   let estoqueFinal = 0;
-  db.get(queryProduct, [productId], (err, { estoque }) => {
+  db.get(querySelectProduct, [productId], (err, { estoque }) => {
     if (err) {
       console.log(err.message);
     }
     estoqueFinal = estoque - quantity;
     estoqueFinal >= 0 ? estoqueFinal : estoque;
-    db.run(queryProduct2, [estoqueFinal, productId]);
+    db.run(queryUpdateProduct, [estoqueFinal, productId]);
   });
   return estoqueFinal;
 };
@@ -159,36 +190,41 @@ const createOrderResolver = (_parent, args) => {
       quantidade,
     } = args;
 
-    const queryOrder = `INSERT INTO pedidos(dataPedido, parcelas, compradorId, status)
+    const queryInsertOrder = `INSERT INTO pedidos(dataPedido, parcelas, compradorId, status)
     VALUES ((?), (?), (?), (?))`;
-    const queryOrder2 = `SELECT * FROM pedidos WHERE dataPedido = (?) AND compradorId = (?)`;
-    const queryOrderProduct = `INSERT INTO pedidos_produtos(produtoId, quantidade, pedidoId)
+    const querySelectOrderId = `SELECT last_insert_rowid() as id`;
+    const querySelectOrder = `SELECT * FROM pedidos WHERE id = (?)`;
+    const queryInsertOrderProduct = `INSERT INTO pedidos_produtos(produtoId, quantidade, pedidoId)
     VALUES ((?), (?), (?))`;
 
-    db.run(queryOrder, [dataPedido, parcelas, compradorId, status])
-      .get(queryOrder2, [dataPedido, compradorId], (err, { id }) => {
+    db.run(queryInsertOrder, [dataPedido, parcelas, compradorId, status])
+      .get(querySelectOrderId, (err, { id }) => {
         if (err) {
           console.log(err.message);
           reject(null);
         }
         produtos.forEach((produtoId, index) => {
           if (updateQuantity(produtoId, quantidade[index]) < 0) reject(null);
-          db.run(queryOrderProduct, [produtoId, quantidade[index], id]);
+          db.run(queryInsertOrderProduct, [produtoId, quantidade[index], id]);
         });
+        db.get(querySelectOrder, [id], (err, row) => {
+          if (err) {
+            console.log(err.message);
+            reject(null);
+          }
+          resolve(row);
+        }); 
       });
-      db.get(queryOrder2, [dataPedido, compradorId], (err, row) => {
-        if (err) {
-          console.log(err.message);
-          reject(null);
-        }
-        resolve(row);
-      }); 
+      
   });
 };
 
 const deleteOrderResolver = (_parent, args) => {
   return new Promise((resolve, reject) => {
-    db.run('DELETE FROM pedidos WHERE id = (?)', [args.id]);
+    const deleteOrderQuery = `DELETE FROM pedidos WHERE id = (?)`;
+    const deleteOrderProductsQuery = `DELETE FROM pedidos_produtos WHERE pedidoId = (?)`;
+    db.run(deleteOrderQuery, [args.id]);
+    db.run(deleteOrderProductsQuery, [args.id]);
     resolve({ message: 'Pedido deletado com sucesso!' });
     reject({ message: 'Algum erro aconteceu.' });
   });
@@ -202,4 +238,5 @@ module.exports = {
   createProductResolver,
   createOrderResolver,
   updateClientResolver,
+  updateProductResolver,
 };

@@ -34,7 +34,8 @@ const {
   createClientResolver,
   createProductResolver,
   createOrderResolver,
-  updateClientResolver
+  updateClientResolver,
+  updateProductResolver
 } = require('./resolvers/mutations');
 
 const app = express();
@@ -247,9 +248,7 @@ const RootMutationType = new GraphQLObjectType({
         preco: { type: GraphQLNonNull(GraphQLFloat) },
         estoque: { type: GraphQLNonNull(GraphQLInt) },
       },
-      resolve: (parent, args) => {
-
-      },
+      resolve: updateProductResolver,
     },
     deleteProduct: {
       type: deleteType,
